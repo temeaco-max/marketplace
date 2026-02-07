@@ -2,12 +2,12 @@ const { Model, DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
   class Product extends Model {}
-  
+
   Product.init({
     id: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
       autoIncrement: true,
+      primaryKey: true,
     },
     title: {
       type: DataTypes.STRING,
@@ -27,11 +27,11 @@ module.exports = (sequelize) => {
     },
     seller_id: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       references: {
-        model: 'User', // Assuming 'User' is the name of the model
+        model: 'User', // foreign key references User
         key: 'id',
       },
-      allowNull: false,
     },
     images: {
       type: DataTypes.JSON,
@@ -40,19 +40,22 @@ module.exports = (sequelize) => {
     inventory: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 0,
     },
     rating: {
-      type: DataTypes.DOUBLE,
+      type: DataTypes.FLOAT,
       allowNull: true,
-      defaultValue: 0,
     },
-  }, {
-    sequelize,
-    modelName: 'Product',
-    timestamps: true,
-    createdAt: 'created_at',
-    updatedAt: 'updated_at',
-  });
+    created_at: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+  }, { sequelize, modelName: 'Product', timestamps: false });
+
   return Product;
 };
